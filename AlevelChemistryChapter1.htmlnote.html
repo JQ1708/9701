@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atoms Molecules and Stoichiometry</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom styles for fraction */
+        .fraction { display: inline-block; vertical-align: middle; text-align: center; margin: 0 0.2rem; }
+        .fraction > span { display: block; padding: 0 0.2rem; }
+        .fraction span.numerator { border-bottom: 1px solid black; }
+        .fraction span.denominator { }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 selection:bg-yellow-200">
+
+    <div class="max-w-4xl mx-auto min-h-screen bg-white shadow-2xl flex flex-col">
+        
+        <!-- Header -->
+        <header className="bg-indigo-700 text-white p-4 sticky top-0 z-50 shadow-md" style="background-color: #4338ca; color: white; padding: 1rem; position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold flex items-center gap-2">
+                    <i data-lucide="beaker" class="text-yellow-300"></i>
+                    Atoms Molecules and Stoichiometry
+                </h1>
+                <!-- Navigation Tabs -->
+                <div id="nav-tabs" class="flex gap-2 text-sm overflow-x-auto no-scrollbar">
+                    <!-- Tabs injected by JS -->
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="flex-grow p-6">
+            <!-- Dynamic Content injected by JS -->
+        </main>
+
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- Data ---
+        const contentData = [
+            {
+                id: 'mindmap',
+                title: 'Topic Overview',
+                type: 'mindmap',
+                content: [] 
+            },
+            {
+                id: 'relative-masses',
+                title: 'Relative Masses of Atoms & Molecules',
+                color: 'bg-blue-50',
+                btnColor: 'bg-blue-100 border-blue-400 hover:bg-blue-200',
+                content: [
+                    {
+                        type: 'card',
+                        title: 'Atomic Mass Unit',
+                        points: [
+                            `The mass of a single atom is so <span class="px-1 rounded bg-red-100 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">small</span> that it is impossible to weigh it directly.`,
+                            `Atomic masses are defined in terms of a standard atom: the <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">unified atomic mass unit</span>.`,
+                            `Definition: One-twelfth of the mass of a <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">carbon-12 isotope</span>.`,
+                            `Symbol: <i>u</i> (or Da/Dalton).`,
+                            `<i>1u</i> = 1.66 x 10<sup class="text-xs">-27</sup> kg.`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Relative Atomic Mass (Ar)',
+                        points: [
+                            `Definition: The ratio of the <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">average mass</span> of the atoms of an element to the unified atomic mass unit.`,
+                            `Determined using the average mass of the <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">isotopes</span>.`,
+                            `<i>A<sub class="text-xs">r</sub></i> has <u>no units</u> (it is a ratio).`,
+                            `Formula: <span class="italic">Relative atomic mass of X</span> = <span class="fraction"><span class="numerator">average mass of one atom of X</span><span class="denominator">1/12 mass of one carbon-12 atom</span></span>`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Relative Isotopic Mass',
+                        points: [
+                            `Mass of a particular atom of an <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">isotope</span> compared to the unified atomic mass unit.`,
+                            `Isotopes: Atoms of same element with <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">different number of neutrons</span>.`,
+                            `Representation: Mass number as <sup class="text-xs">20</sup>Ne or neon-20.`,
+                            `Calculation (Weighted Average): Multiply atomic mass by <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">% abundance</span> for each isotope, add them, then divide by 100.`,
+                            `<i>Relative atomic mass</i> = <span class="fraction"><span class="numerator">Σ(isotope % abundance x isotope mass number)</span><span class="denominator">100</span></span>`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Relative Molecular Mass (Mr)',
+                        points: [
+                            `Ratio of weighted average mass of a <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">molecule</span> to the unified atomic mass unit.`,
+                            `<i>M<sub class="text-xs">r</sub></i> has <u>no units</u>.`,
+                            `Found by adding relative atomic masses of <b>all atoms</b> in one molecule.`,
+                            `Uses the simplest formula (formula unit). E.g., Silicon dioxide = SiO<sub class="text-xs">2</sub>.`
+                        ]
+                    },
+                    {
+                        type: 'table',
+                        title: 'Example Mr Calculations',
+                        headers: ['Substance', 'Atoms Present', 'Mr Calculation'],
+                        rows: [
+                            ['Hydrogen (H\u2082)', '2 x H', '(2 x 1.0) = 2.0'],
+                            ['Water (H\u2082O)', '(2 x H) + (1 x O)', '(2 x 1.0) + (1 x 16.0) = 18.0'],
+                            ['Potassium Carbonate (K\u2082CO\u2083)', '(2 x K) + (1 x C) + (3 x O)', '(2 x 39.1) + (1 x 12.0) + (3 x 16.0) = 138.2'],
+                            ['Ammonium Sulfate ((NH\u2084)\u2082SO\u2084)', '(2 x N) + (8 x H) + (1 x S) + (4 x O)', '(2 x 14.0) + (8 x 1.0) + (1 x 32.1) + (4 x 16.0) = 132.1']
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Relative Formula Mass',
+                        points: [
+                            `Used for compounds containing <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">ions</span>.`,
+                            `Calculated exactly the same way as Relative Molecular Mass.`,
+                            `Same units (dimensionless).`
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'mole',
+                title: 'The Mole & Avogadro Constant',
+                color: 'bg-green-50',
+                btnColor: 'bg-green-100 border-green-400 hover:bg-green-200',
+                content: [
+                    {
+                        type: 'card',
+                        title: 'The Avogadro Constant (N\u1D2C or L)',
+                        points: [
+                            `Number of particles equivalent to the relative atomic/molecular mass.`,
+                            `Value: <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">6.02 x 10<sup class="text-xs">23</sup> mol<sup class="text-xs">-1</sup></span>.`,
+                            `Applies to atoms, molecules, ions, and electrons.`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'The Mole (mol)',
+                        points: [
+                            `Mass of a substance containing the same number of fundamental units as atoms in exactly 12.00 g of <sup class="text-xs">12</sup>C.`,
+                            `1 mole of any element = <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">Relative Atomic Mass</span> in grams.`,
+                            `Example: 1 mol Carbon = 12g (contains 6.02 x 10<sup class="text-xs">23</sup> atoms).`,
+                            `Example: 1 mol Water = 18g.`
+                        ]
+                    },
+                    {
+                        type: 'table',
+                        title: 'Worked Examples: 1 Mole',
+                        headers: ['Substance', 'Particles', 'Number', 'Relative Mass (g)'],
+                        rows: [
+                            ['Na', 'Atoms', '6.02 x 10\u00B2\u00B3', '23.0'],
+                            ['H\u2082', 'Molecules', '6.02 x 10\u00B2\u00B3', '2.0 (2 x 1.0)'],
+                            ['H\u2082', 'Atoms', '1.204 x 10\u00B2\u2074', '2.0'],
+                            ['NaCl', 'Molecules', '6.02 x 10\u00B2\u00B3', '58.5 (23.0 + 35.5)'],
+                            ['NaCl', 'Total Atoms', '1.204 x 10\u00B2\u2074', '58.5']
+                        ]
+                    },
+                    {
+                        type: 'svg',
+                        title: 'Visualizing The Mole',
+                        svgType: 'mole_triangle'
+                    }
+                ]
+            },
+            {
+                id: 'formulas',
+                title: 'Formulas & Equations',
+                color: 'bg-purple-50',
+                btnColor: 'bg-purple-100 border-purple-400 hover:bg-purple-200',
+                content: [
+                    {
+                        type: 'card',
+                        title: 'Ionic Compounds',
+                        points: [
+                            `Formed from a <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">metal</span> and a <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">non-metal</span>.`,
+                            `Electrically neutral (Positive charges = Negative charges).`,
+                            `<b>Positive Ions (Cations):</b> Metals. Group 1 (+1), Group 2 (+2), Group 13 (+3).`,
+                            `<b>Transition Metals:</b> Variable charge, indicated by Roman Numerals (e.g., Copper(II) = 2+).`,
+                            `<b>Negative Ions (Anions):</b> Non-metals (Group 15-17). Suffix 'ide'. Group 15 (-3), Group 16 (-2), Group 17 (-1).`
+                        ]
+                    },
+                    {
+                        type: 'table',
+                        title: 'Common Ion Charges',
+                        headers: ['Group', 'Charge', 'Examples'],
+                        rows: [
+                            ['1', '+1', 'Li\u207A, Na\u207A, K\u207A'],
+                            ['2', '+2', 'Mg\u00B2\u207A, Ca\u00B2\u207A'],
+                            ['13', '+3', 'Al\u00B3\u207A, Ga\u00B3\u207A'],
+                            ['15', '-3', 'N\u00B3\u207B, P\u00B3\u207B'],
+                            ['16', '-2', 'O\u00B2\u207B, S\u00B2\u207B'],
+                            ['17', '-1', 'F\u207B, Cl\u207B, Br\u207B']
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Complex/Compound Ions',
+                        points: [
+                            `Ammonium: NH<sub class="text-xs">4</sub><sup class="text-xs">+</sup>`,
+                            `Hydroxide: OH<sup class="text-xs">-</sup>`,
+                            `Nitrate: NO<sub class="text-xs">3</sub><sup class="text-xs">-</sup>`,
+                            `Sulfate: SO<sub class="text-xs">4</sub><sup class="text-xs">2-</sup>`,
+                            `Carbonate: CO<sub class="text-xs">3</sub><sup class="text-xs">2-</sup>`,
+                            `Phosphate: PO<sub class="text-xs">4</sub><sup class="text-xs">3-</sup>`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Balancing Equations',
+                        points: [
+                            `Atoms cannot be created or destroyed.`,
+                            `Number of each atom must be same on both sides.`,
+                            `<span class="px-1 rounded bg-red-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">NEVER</span> change the formulae.`,
+                            `Only add numbers <b>in front</b> (coefficients).`,
+                            `Order: Balance Carbon first, then Hydrogen, then Oxygen (for combustion).`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'State Symbols',
+                        points: [
+                            `<b>(s)</b> Solid`,
+                            `<b>(l)</b> Liquid`,
+                            `<b>(g)</b> Gas`,
+                            `<b>(aq)</b> Aqueous (dissolved in water)`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Ionic Equations',
+                        points: [
+                            `Show only ions participating in reaction.`,
+                            `Remove <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">Spectator Ions</span> (ions that do not change).`,
+                            `Example: Zn(s) + Cu<sup class="text-xs">2+</sup>(aq) &rarr; Zn<sup class="text-xs">2+</sup>(aq) + Cu(s)`
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'empirical',
+                title: 'Empirical & Molecular Formulae',
+                color: 'bg-orange-50',
+                btnColor: 'bg-orange-100 border-orange-400 hover:bg-orange-200',
+                content: [
+                    {
+                        type: 'card',
+                        title: 'Definitions',
+                        points: [
+                            `<b>Molecular Formula:</b> Shows <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">exact number</span> and type of each atom in a molecule. (e.g., C<sub class="text-xs">2</sub>H<sub class="text-xs">4</sub>O<sub class="text-xs">2</sub>)`,
+                            `<b>Empirical Formula:</b> Simplest <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">whole number ratio</span> of elements. (e.g., CH<sub class="text-xs">2</sub>O)`,
+                            `Ionic compounds always have similar empirical and molecular formulae.`
+                        ]
+                    },
+                    {
+                        type: 'step',
+                        title: 'Calculating Empirical Formula',
+                        steps: [
+                            "Write mass (or %) of each element.",
+                            "Divide mass by Relative Atomic Mass (Ar) to get Moles.",
+                            "Divide all mole values by the SMALLEST mole value.",
+                            "Write the ratio as integers."
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Calculating Molecular Formula',
+                        points: [
+                            `1. Calculate Relative Formula Mass of Empirical Formula.`,
+                            `2. Divide <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">M<sub class="text-xs">r</sub> of compound</span> by <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">M<sub class="text-xs">r</sub> of Empirical Formula</span>.`,
+                            `3. Multiply empirical ratio by this result.`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Water of Crystallisation',
+                        points: [
+                            `<b>Hydrated:</b> Compound containing water in structure (e.g., CuSO<sub class="text-xs">4</sub>•5H<sub class="text-xs">2</sub>O). Separated by dot.`,
+                            `<b>Anhydrous:</b> Compound without water (e.g., CuSO<sub class="text-xs">4</sub>).`,
+                            `Reversible by heating.`,
+                            `Calculation: Treat water as a separate 'element', calculate moles of Salt vs Water, find ratio.`
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'reacting',
+                title: 'Reacting Masses & Volumes',
+                color: 'bg-pink-50',
+                btnColor: 'bg-pink-100 border-pink-400 hover:bg-pink-200',
+                content: [
+                    {
+                        type: 'card',
+                        title: 'Mole Calculations',
+                        points: [
+                            `<i>Number of moles</i> = <span class="fraction"><span class="numerator">Mass of substance (g)</span><span class="denominator">Molar Mass (g mol⁻¹)</span></span>`,
+                            `Clear distinction: 1 mol CaF<sub class="text-xs">2</sub> has 1 mol Ca<sup class="text-xs">2+</sup> but <b>2</b> mol F<sup class="text-xs">-</sup>.`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Reacting Masses & Stoichiometry',
+                        points: [
+                            `Stoichiometry: Ratio of moles in balanced equation.`,
+                            `Use balanced equation to find ratio.`,
+                            `Calculate moles of known &rarr; Use ratio &rarr; Calculate mass of unknown.`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Percentage Yield',
+                        points: [
+                            `Reactions may not complete due to: side reactions, incomplete reaction, loss to atmosphere.`,
+                            `<b>Actual Yield:</b> Obtained experimentally.`,
+                            `<b>Theoretical Yield:</b> Calculated maximum.`,
+                            `<i>% Yield</i> = <span class="fraction"><span class="numerator">Actual Yield</span><span class="denominator">Theoretical Yield</span></span> x 100`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Excess & Limiting Reagents',
+                        points: [
+                            `<b>Limiting Reagent:</b> Reactant not in excess. Determines amount of product.`,
+                            `<b>Excess Reagent:</b> Reactant left over.`,
+                            `Method: Calculate moles of all reactants. Compare to ratio. Identify which runs out first.`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Volumes of Gases',
+                        points: [
+                            `<b>Avogadro's Hypothesis:</b> Equal volumes of gases contain same number of molecules.`,
+                            `At RTP (20°C, 1 atm), 1 mole gas = <span class="px-1 rounded bg-yellow-200 font-semibold shadow-sm inline-block transform hover:scale-105 transition-transform cursor-default">24.0 dm<sup class="text-xs">3</sup></span>.`,
+                            `<i>Volume (dm<sup class="text-xs">3</sup>)</i> = Amount (mol) x 24.0`,
+                            `<i>Moles</i> = <span class="fraction"><span class="numerator">Volume (dm³)</span><span class="denominator">24.0</span></span>`
+                        ]
+                    },
+                    {
+                        type: 'card',
+                        title: 'Concentration of Solutions',
+                        points: [
+                            `Amount of solute per 1 dm<sup class="text-xs">3</sup> solution.`,
+                            `<i>Concentration (mol dm<sup class="text-xs">-3</sup>)</i> = <span class="fraction"><span class="numerator">Moles of Solute</span><span class="denominator">Volume (dm³)</span></span>`,
+                            `Conversion: cm<sup class="text-xs">3</sup> to dm<sup class="text-xs">3</sup> (divide by 1000).`,
+                            `<i>Mass conc</i> = Moles x Molar Mass.`
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        const quizzes = {
+            'relative-masses': [
+                { q: "What is the standard atom for atomic mass?", options: ["Hydrogen-1", "Oxygen-16", "Carbon-12", "Carbon-14"], a: 2 },
+                { q: "What is the unit for Relative Atomic Mass?", options: ["g", "kg", "mol", "No units"], a: 3 },
+                { q: "Isotopes have different numbers of...", options: ["Protons", "Neutrons", "Electrons", "Orbits"], a: 1 },
+                { q: "Calculate Mr of H\u2082O (H=1, O=16)", options: ["17", "18", "33", "20"], a: 1 },
+                { q: "What is the symbol for unified atomic mass unit?", options: ["g", "amu", "u", "m"], a: 2 },
+                { q: "Which value is used for relative atomic mass?", options: ["Average mass", "Heaviest isotope", "Lightest isotope", "Most common mass"], a: 0 },
+                { q: "Relative formula mass is used for...", options: ["Gases", "Liquids", "Ionic compounds", "Metals only"], a: 2 },
+                { q: "What is the mass of 1u in kg?", options: ["1.66 x 10^-24", "1.66 x 10^-27", "6.02 x 10^23", "9.11 x 10^-31"], a: 1 },
+                { q: "Formula for Ammonium Sulfate?", options: ["NH4SO4", "(NH4)2SO4", "NH4(SO4)2", "(NH3)2SO4"], a: 1 },
+                { q: "What calculates Mr?", options: ["Sum of Ar", "Product of Ar", "Difference of Ar", "Average of Ar"], a: 0 }
+            ],
+            'mole': [
+                { q: "What is the Avogadro constant?", options: ["6.02 x 10^22", "6.02 x 10^23", "6.02 x 10^24", "1.66 x 10^-27"], a: 1 },
+                { q: "Mass of 1 mole of Carbon-12?", options: ["1g", "12g", "6g", "24g"], a: 1 },
+                { q: "Mass of 1 mole of Na (Ar=23)?", options: ["11g", "22g", "23g", "46g"], a: 2 },
+                { q: "How many atoms in 1 mol of O2?", options: ["6.02 x 10^23", "1.204 x 10^24", "3.01 x 10^23", "2.4 x 10^24"], a: 1 },
+                { q: "Formula to find Moles from Mass?", options: ["Mass x Mr", "Mass / Mr", "Mr / Mass", "Mass + Mr"], a: 1 },
+                { q: "What is molar mass unit?", options: ["g", "kg", "g mol^-1", "mol g^-1"], a: 2 },
+                { q: "Number of molecules in 0.5 mol?", options: ["3.01 x 10^23", "6.02 x 10^23", "1.5 x 10^23", "12.04 x 10^23"], a: 0 },
+                { q: "Moles in 12g of C?", options: ["0.5", "1.0", "2.0", "12.0"], a: 1 },
+                { q: "Does Avogadro constant apply to electrons?", options: ["Yes", "No", "Only valence", "Only core"], a: 0 },
+                { q: "Mass of 2 moles of H2 (Ar=1)?", options: ["2g", "4g", "1g", "8g"], a: 1 }
+            ],
+            'formulas': [
+                { q: "Charge of Group 1 metals?", options: ["+1", "+2", "-1", "Neutral"], a: 0 },
+                { q: "Charge of Group 17 non-metals?", options: ["+1", "+7", "-1", "-2"], a: 2 },
+                { q: "Formula for Copper(II) Oxide?", options: ["Cu2O", "CuO", "CuO2", "Cu2O3"], a: 1 },
+                { q: "Suffix for monoatomic negative ions?", options: ["-ate", "-ite", "-ide", "-ine"], a: 2 },
+                { q: "Charge of Sulfate ion?", options: ["-1", "-2", "-3", "+1"], a: 1 },
+                { q: "Formula for Aluminum Nitrate?", options: ["AlNO3", "Al(NO3)2", "Al(NO3)3", "Al2NO3"], a: 2 },
+                { q: "What are ions that don't react called?", options: ["Passive ions", "Spectator ions", "Ghost ions", "Stable ions"], a: 1 },
+                { q: "Symbol for aqueous?", options: ["(a)", "(aq)", "(l)", "(w)"], a: 1 },
+                { q: "Order to balance combustion?", options: ["H, C, O", "O, H, C", "C, H, O", "Any order"], a: 2 },
+                { q: "Charge of Phosphate ion?", options: ["-1", "-2", "-3", "-4"], a: 2 }
+            ],
+            'empirical': [
+                { q: "Simplest whole number ratio is...", options: ["Molecular Formula", "Empirical Formula", "Structural Formula", "Displayed Formula"], a: 1 },
+                { q: "Shows exact number of atoms...", options: ["Molecular Formula", "Empirical Formula", "Ionic Formula", "General Formula"], a: 0 },
+                { q: "To calculate empirical, divide mass by...", options: ["Atomic Number", "Relative Atomic Mass", "Neutron Number", "100"], a: 1 },
+                { q: "If Empirical is CH2 and Mr is 28, Molecular is...", options: ["CH2", "C2H4", "C3H6", "C4H8"], a: 1 },
+                { q: "Separates salt and water in formula...", options: ["Dash", "Comma", "Dot", "Slash"], a: 2 },
+                { q: "Compound without water is...", options: ["Hydrated", "Dehydrated", "Anhydrous", "Dry"], a: 2 },
+                { q: "Process to remove water of crystallisation?", options: ["Freezing", "Heating", "Filtering", "Dissolving"], a: 1 },
+                { q: "Ratio calculation step?", options: ["Divide by largest", "Divide by smallest", "Multiply by smallest", "Subtract smallest"], a: 1 },
+                { q: "What is a compound with water in its structure called?", options: ["Hydrated", "Anhydrous", "Soluble", "Aqueous"], a: 0 },
+                { q: "Value of x in CuSO4.xH2O typically?", options: ["2", "5", "7", "10"], a: 1 }
+            ],
+            'reacting': [
+                { q: "Formula for % Yield?", options: ["Actual/Theoretical x 100", "Theoretical/Actual x 100", "Actual x Theoretical", "Actual - Theoretical"], a: 0 },
+                { q: "Reactant that runs out first?", options: ["Excess", "Limiting", "Catalyst", "Solvent"], a: 1 },
+                { q: "Volume of 1 mol gas at RTP?", options: ["22.4 dm3", "24.0 dm3", "25.0 dm3", "100 dm3"], a: 1 },
+                { q: "Conc formula?", options: ["mol x vol", "mol / vol", "vol / mol", "mass / vol"], a: 1 },
+                { q: "Convert cm3 to dm3?", options: ["x 1000", "/ 1000", "x 100", "/ 100"], a: 1 },
+                { q: "Stoichiometry relies on...", options: ["Masses", "Volumes", "Mole Ratios", "Densities"], a: 2 },
+                { q: "RTP temperature is...", options: ["0 C", "20 C", "25 C", "100 C"], a: 1 },
+                { q: "Avogadro hypothesis relates...", options: ["Mass and Vol", "Vol and Mules", "Vol and Particles", "Pressure and Temp"], a: 2 },
+                { q: "Titration calculates...", options: ["Temperature", "Concentration", "Pressure", "Speed"], a: 1 },
+                { q: "Yield is rarely 100% because...", options: ["Side reactions", "Too fast", "Too hot", "Too much product"], a: 0 }
+            ]
+        };
+
+        // --- State Management ---
+        let state = {
+            activeSection: 'mindmap',
+            quizMode: false,
+            currentQuiz: [],
+            quizAnswers: {},
+            showResult: false,
+            score: 0
+        };
+
+        // --- Render Functions ---
+
+        function init() {
+            renderTabs();
+            renderMainContent();
+            lucide.createIcons();
+        }
+
+        function setActiveSection(id) {
+            state.activeSection = id;
+            state.quizMode = false;
+            renderTabs();
+            renderMainContent();
+            lucide.createIcons();
+        }
+
+        function renderTabs() {
+            const navTabs = document.getElementById('nav-tabs');
+            let html = `
+                <button onclick="setActiveSection('mindmap')" 
+                    class="px-3 py-1 rounded-full transition-colors ${state.activeSection === 'mindmap' ? 'bg-yellow-400 text-indigo-900 font-bold' : 'bg-indigo-600 hover:bg-indigo-500'}">
+                    Map
+                </button>
+            `;
+            contentData.slice(1).forEach(section => {
+                const isActive = state.activeSection === section.id;
+                html += `
+                    <button onclick="setActiveSection('${section.id}')"
+                        class="px-3 py-1 rounded-full whitespace-nowrap transition-colors ${isActive ? 'bg-yellow-400 text-indigo-900 font-bold' : 'bg-indigo-600 hover:bg-indigo-500'}">
+                        ${section.title.split(' ')[0]}...
+                    </button>
+                `;
+            });
+            navTabs.innerHTML = html;
+        }
+
+        function renderMainContent() {
+            const main = document.getElementById('main-content');
+            
+            if (state.quizMode) {
+                renderQuiz(main);
+                return;
+            }
+
+            if (state.activeSection === 'mindmap') {
+                renderMindMap(main);
+                return;
+            }
+
+            // Render Active Section
+            const activeContent = contentData.find(c => c.id === state.activeSection);
+            let html = `
+                <div class="animate-fade-in">
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-indigo-100 pb-2">
+                        <div class="p-2 bg-indigo-600 rounded-lg text-white shadow-lg">
+                            <i data-lucide="book-open"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800">${activeContent.title}</h2>
+                    </div>
+
+                    <div class="space-y-8">
+            `;
+
+            activeContent.content.forEach(block => {
+                html += `
+                    <div class="rounded-xl overflow-hidden shadow-sm border border-gray-200 ${activeContent.color}">
+                        ${block.title ? `
+                            <div class="bg-white/60 p-3 border-b border-gray-200 font-bold text-lg text-indigo-900 flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+                                ${block.title}
+                            </div>
+                        ` : ''}
+                        
+                        <div class="p-4">
+                            ${renderBlockContent(block)}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                    <!-- Quiz Trigger -->
+                    <div class="mt-12 flex justify-center">
+                        <button onclick="startQuiz('${activeContent.id}')"
+                            class="group flex items-center gap-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transform transition-all hover:-translate-y-1">
+                            <i data-lucide="activity" class="group-hover:rotate-12 transition-transform"></i>
+                            <span class="font-bold text-lg">Take the ${activeContent.title} Quiz</span>
+                            <i data-lucide="arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            main.innerHTML = html;
+        }
+
+        function renderBlockContent(block) {
+            if (block.type === 'card') {
+                return `<ul class="space-y-3">
+                    ${block.points.map(point => `
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="chevron-right" class="flex-shrink-0 text-indigo-500 mt-1" width="18"></i>
+                            <div class="text-gray-700 leading-relaxed">${point}</div>
+                        </li>
+                    `).join('')}
+                </ul>`;
+            } else if (block.type === 'step') {
+                return `<div class="space-y-4">
+                    ${block.steps.map((step, idx) => `
+                        <div class="flex items-center gap-4 bg-white p-3 rounded-lg shadow-sm">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold">
+                                ${idx + 1}
+                            </div>
+                            <p>${step}</p>
+                        </div>
+                    `).join('')}
+                </div>`;
+            } else if (block.type === 'table') {
+                return `<div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-indigo-100 text-indigo-900 uppercase font-bold">
+                            <tr>${block.headers.map(h => `<th class="px-4 py-2">${h}</th>`).join('')}</tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 bg-white">
+                            ${block.rows.map(row => `
+                                <tr>${row.map(cell => `<td class="px-4 py-2 border-r last:border-0 border-gray-100">${cell}</td>`).join('')}</tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>`;
+            } else if (block.type === 'svg') {
+                 if (block.svgType === 'mole_triangle') {
+                    return `
+                    <div class="flex justify-center my-6">
+                        <svg viewBox="0 0 200 180" class="w-96 h-auto drop-shadow-md">
+                            <path d="M100 10 L190 170 L10 170 Z" fill="#EEF2FF" stroke="#4F46E5" stroke-width="3" />
+                            <line x1="55" y1="90" x2="145" y2="90" stroke="#4F46E5" stroke-width="2" />
+                            <line x1="100" y1="90" x2="100" y2="170" stroke="#4F46E5" stroke-width="2" />
+                            
+                            <text x="100" y="70" text-anchor="middle" font-size="16" font-weight="bold" fill="#3730A3">Mass (g)</text>
+                            <text x="50" y="140" text-anchor="middle" font-size="14" font-weight="bold" fill="#3730A3">Moles</text>
+                            <text x="150" y="140" text-anchor="middle" font-size="14" font-weight="bold" fill="#3730A3">Mr</text>
+                            <text x="100" y="140" text-anchor="middle" font-size="12" fill="#6B7280">x</text>
+                            <text x="100" y="90" text-anchor="middle" dy="-5" font-size="12" fill="#6B7280">/</text>
+                        </svg>
+                    </div>`;
+                 }
+                 return `<div class="border-2 border-dashed border-gray-300 p-4 text-center text-gray-500 rounded-lg bg-gray-50">Space for Diagram</div>`;
+            }
+            return '';
+        }
+
+        function renderMindMap(container) {
+            container.innerHTML = `
+                <div class="animate-fade-in">
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-indigo-100 pb-2">
+                        <div class="p-2 bg-indigo-600 rounded-lg text-white shadow-lg">
+                            <i data-lucide="brain"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800">Start Here: Topic Map</h2>
+                    </div>
+                    
+                    <div class="bg-indigo-50 rounded-xl p-6 border border-indigo-100 flex justify-center overflow-x-auto">
+                         <div class="flex flex-col items-center gap-4 min-w-[600px]">
+                            <div class="p-4 bg-indigo-600 text-white rounded-xl shadow-lg font-bold text-xl mb-4">Atoms Molecules and Stoichiometry</div>
+                            
+                            <div class="grid grid-cols-2 gap-8 w-full">
+                                <!-- Branch 1 -->
+                                <div class="flex flex-col items-center">
+                                   <div class="h-8 w-1 bg-gray-300"></div>
+                                   <div onclick="setActiveSection('relative-masses')"
+                                     class="p-3 bg-blue-100 border-2 border-blue-400 rounded-lg cursor-pointer hover:bg-blue-200 w-full text-center font-semibold shadow-sm transition-colors">
+                                      Relative Masses
+                                   </div>
+                                   <div class="h-4 w-1 bg-gray-300"></div>
+                                   <div class="text-xs text-gray-500 bg-white p-1 border rounded">Ar, Mr, Isotopes</div>
+                                </div>
+                                <!-- Branch 2 -->
+                                <div class="flex flex-col items-center">
+                                   <div class="h-8 w-1 bg-gray-300"></div>
+                                   <div onclick="setActiveSection('mole')"
+                                     class="p-3 bg-green-100 border-2 border-green-400 rounded-lg cursor-pointer hover:bg-green-200 w-full text-center font-semibold shadow-sm transition-colors">
+                                      The Mole
+                                   </div>
+                                   <div class="h-4 w-1 bg-gray-300"></div>
+                                   <div class="text-xs text-gray-500 bg-white p-1 border rounded">Avogadro, Conversions</div>
+                                </div>
+                                <!-- Branch 3 -->
+                                <div class="flex flex-col items-center">
+                                   <div class="h-8 w-1 bg-gray-300"></div>
+                                   <div onclick="setActiveSection('formulas')"
+                                     class="p-3 bg-purple-100 border-2 border-purple-400 rounded-lg cursor-pointer hover:bg-purple-200 w-full text-center font-semibold shadow-sm transition-colors">
+                                      Formulas & Eqns
+                                   </div>
+                                   <div class="h-4 w-1 bg-gray-300"></div>
+                                   <div class="text-xs text-gray-500 bg-white p-1 border rounded">Balancing, Ionic</div>
+                                </div>
+                                <!-- Branch 4 -->
+                                <div class="flex flex-col items-center">
+                                   <div class="h-8 w-1 bg-gray-300"></div>
+                                   <div onclick="setActiveSection('reacting')"
+                                     class="p-3 bg-pink-100 border-2 border-pink-400 rounded-lg cursor-pointer hover:bg-pink-200 w-full text-center font-semibold shadow-sm transition-colors">
+                                      Reacting Masses
+                                   </div>
+                                   <div class="h-4 w-1 bg-gray-300"></div>
+                                   <div class="text-xs text-gray-500 bg-white p-1 border rounded">Stoichiometry, Yield</div>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                    <p class="mt-4 text-center text-gray-500 italic">Select a topic above or tap a node to begin.</p>
+                </div>
+            `;
+        }
+
+        // --- Quiz Logic ---
+
+        function startQuiz(sectionId) {
+            state.quizMode = true;
+            state.currentQuiz = quizzes[sectionId] || [];
+            state.quizAnswers = {};
+            state.showResult = false;
+            state.score = 0;
+            renderMainContent();
+            lucide.createIcons();
+        }
+
+        function handleQuizOptionClick(qIdx, optIdx) {
+            state.quizAnswers[qIdx] = optIdx;
+            renderQuiz(document.getElementById('main-content')); // Re-render to show selection
+        }
+
+        function submitQuiz() {
+            let newScore = 0;
+            state.currentQuiz.forEach((q, idx) => {
+                if (state.quizAnswers[idx] === q.a) newScore++;
+            });
+            state.score = newScore;
+            state.showResult = true;
+            renderQuiz(document.getElementById('main-content'));
+            lucide.createIcons();
+        }
+
+        function renderQuiz(container) {
+            if (state.showResult) {
+                container.innerHTML = `
+                <div class="animate-fade-in max-w-2xl mx-auto">
+                    <div class="text-center bg-white p-8 rounded-2xl shadow-xl border-t-8 border-green-500">
+                       <div class="mb-4 inline-flex p-4 rounded-full bg-green-100 text-green-600">
+                         <i data-lucide="check-circle" width="48" height="48"></i>
+                       </div>
+                       <h3 class="text-3xl font-bold mb-2">Quiz Complete!</h3>
+                       <p class="text-gray-600 mb-6">You scored</p>
+                       <div class="text-6xl font-bold text-indigo-600 mb-6">
+                         ${state.score} <span class="text-2xl text-gray-400">/ ${state.currentQuiz.length}</span>
+                       </div>
+                       
+                       <div class="flex justify-center gap-4">
+                         <button onclick="startQuiz('${state.activeSection}')" class="flex items-center gap-2 px-6 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
+                           <i data-lucide="refresh-cw" width="18"></i> Retry
+                         </button>
+                         <button onclick="setActiveSection('${state.activeSection}')" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                           Back to Notes
+                         </button>
+                       </div>
+                    </div>
+                </div>`;
+                return;
+            }
+
+            let html = `
+                <div class="animate-fade-in max-w-2xl mx-auto">
+                    <div class="flex items-center justify-between mb-6">
+                         <h2 class="text-2xl font-bold text-gray-800">Knowledge Check</h2>
+                         <button onclick="setActiveSection('${state.activeSection}')" class="text-gray-500 hover:text-gray-800">Exit Quiz</button>
+                    </div>
+                    <div class="space-y-6">
+            `;
+
+            state.currentQuiz.forEach((q, idx) => {
+                const selected = state.quizAnswers[idx];
+                html += `
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                        <h3 class="font-bold text-lg mb-4 flex gap-2">
+                            <span class="text-indigo-500">Q${idx + 1}.</span> ${q.q}
+                        </h3>
+                        <div class="grid gap-3">
+                            ${q.options.map((opt, optIdx) => `
+                                <button onclick="handleQuizOptionClick(${idx}, ${optIdx})"
+                                    class="text-left p-3 rounded-lg border-2 transition-all ${
+                                        selected === optIdx 
+                                        ? 'border-indigo-500 bg-indigo-50 text-indigo-700 font-semibold' 
+                                        : 'border-gray-100 hover:border-indigo-200'
+                                    }">
+                                    ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            const allAnswered = Object.keys(state.quizAnswers).length === state.currentQuiz.length;
+            html += `
+                <button onclick="submitQuiz()" ${!allAnswered ? 'disabled' : ''}
+                    class="w-full ${!allAnswered ? 'bg-gray-300' : 'bg-green-600'} text-white font-bold py-4 rounded-xl shadow-lg mt-8 transition-colors">
+                    Submit Answers
+                </button>
+            </div></div>`;
+
+            container.innerHTML = html;
+        }
+
+        // Initialize App
+        init();
+
+    </script>
+</body>
+</html>
